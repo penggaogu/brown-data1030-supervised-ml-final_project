@@ -1,42 +1,78 @@
-# Predicting Dog Trainability to Mitigate Bite Incidents in New York City
+# Predicting Dog Behavioral Risk to Inform Public Safety Interventions in NYC
 
 ## Overview
-This project aims to predict dog trainability as a means to mitigate dog bite incidents in urban areas like New York City. Using data from the National Electronic Injury Surveillance System (NEISS) and the American Kennel Club (AKC), we evaluate factors influencing trainability, such as breed, age, and spay/neuter status. The goal is to provide actionable insights for public safety measures and targeted training programs.
+Dog bite incidents pose a persistent public safety concern in urban environments such as New York City. However, direct behavioral risk signals are often unavailable at scale.
 
-## Dataset
-The dataset combines:
-- **Dog Bite Incidents:** NEISS records detailing dog characteristics, incident contexts, and victim demographics.
-- **Trainability Scores:** Evaluations provided by AKC based on breed-based criteria.
+This project proposes a **data-driven proxy modeling framework** to estimate dog behavioral risk (via trainability scores) by integrating heterogeneous data sources. The goal is to support **preventive interventions**, such as targeted training programs and policy design.
 
-### Key Features:
-- **Breed, Gender, Spay/Neuter Status, and Season** were among the variables used to predict the target variable, `trainability value`, a continuous score ranging from 0 to 1.
-- Exploratory data analysis revealed key insights such as breed distribution and seasonal trends in bite incidents.
+Unlike traditional analyses that focus on post-incident reporting, this work shifts toward **predictive risk estimation**.
+
+---
+
+## Data Sources
+
+This project integrates multiple data sources:
+
+- **Dog Bite Incident Data (NEISS):** Provides structured records of injury-related incidents, including dog attributes and contextual factors.
+- **Breed-level Behavioral Scores (AKC):** Used as a proxy signal for trainability and behavioral tendencies.
+
+### Key Challenge
+Behavioral traits are not directly observable at the individual level. This project addresses this by constructing a **proxy learning framework**, mapping breed-level priors to incident-level observations.
+
+---
 
 ## Methodology
-1. **Data Preprocessing:**
-   - Missing values were imputed.
-   - Features were encoded (ordinal and one-hot encoding).
-   - Highly collinear variables were removed.
-2. **Model Training:**
-   - Models evaluated include Ridge Regression, Lasso Regression, Random Forest, XGBoost, and Support Vector Regression.
-   - **Ridge Regression** emerged as the best-performing model with an MSE of 0.02905 on the test set.
-3. **Evaluation:**
-   - Mean Squared Error (MSE) was used as the primary metric.
-   - Feature importance was analyzed using SHAP values and Ridge coefficients.
+
+### 1. Feature Engineering
+- Harmonized breed representations across datasets
+- Encoded categorical variables (gender, spay/neuter, season)
+- Removed collinearity to stabilize linear models
+
+### 2. Modeling Strategy
+Evaluated multiple regression models:
+- Ridge Regression
+- Lasso Regression
+- Random Forest
+- XGBoost
+- Support Vector Regression
+
+A key design consideration was balancing **predictive performance and interpretability**, given the downstream policy implications.
+
+---
 
 ## Results
-- **Top Features Influencing Trainability:**
-  - **Breed:** The strongest predictor of trainability.
-  - **Season:** Seasonal trends align with behavioral changes.
-  - **Spay/Neuter Status:** Unneutered dogs were associated with lower trainability.
-- **Best Model:** Ridge Regression was selected due to its strong performance and interpretability.
 
-## Prerequisites
-- **Python Version:** 3.10
-- **Dependencies:** See `requirements.yaml` for a full list of libraries and package versions.
+- **Best Model:** Ridge Regression (Test MSE = 0.029)
+- **Key Predictors:**
+  - Breed (dominant signal)
+  - Seasonality effects
+  - Spay/Neuter status
 
-## Setup Instructions
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/penggaogu/Brown_data1030.git
-   cd Brown_data1030
+### Insight
+Results suggest that **structural factors (breed priors) dominate behavioral prediction**, but environmental variables still provide meaningful signals.
+
+---
+
+## Implications
+
+This work demonstrates a scalable approach to:
+
+- Approximate behavioral risk using indirect signals
+- Inform **targeted intervention strategies**
+- Bridge the gap between **technical modeling and public policy**
+
+---
+
+## Technical Stack
+
+- Python 3.10
+- scikit-learn, XGBoost
+- SHAP for interpretability
+
+---
+
+## Reproducibility
+
+```bash
+git clone https://github.com/penggaogu/Brown_data1030.git
+cd Brown_data1030
